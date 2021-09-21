@@ -1,0 +1,88 @@
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.Scanner;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+
+
+/**
+ * Starter code for Programming Assignment 1.
+ */
+
+class HttpConnectionHandler{
+
+ 
+
+  
+
+    
+
+}
+public class Main {
+
+  public static void main(String[] args) {
+    final int portNumber = 4444;
+    PrintWriter writer = null;
+    BufferedReader buffReader = null;
+    String thisLine = null;
+    //InputStreamReader streamReader = null;
+      try ( ServerSocket socket = new ServerSocket(portNumber) ) {
+        System.out.println("Server started on port: " + portNumber);
+
+        // Enter an endless loop, waiting for connections from clients.
+        while(true) {
+          Socket clientSock = socket.accept();
+          /*
+          HttpConnectionHandler handler = new HttpConnectionHandler(clientSock);
+          handler.handleConnection();
+          */
+
+          writer = new PrintWriter(clientSock.getOutputStream());
+          // TODO: Part 1 - Respond with "Hello from your server"
+          writer.write("hello from your server");
+          writer.flush();
+          writer.close();
+
+          //reads input from other side through BufferedReader
+          buffReader = new BufferedReader(new InputStreamReader( clientSock.getInputStream()));
+          //stops when user inputs "bye"
+          while ((thisLine = buffReader.readLine()) != "bye") {
+            System.out.println("you said: " + thisLine);
+          }
+          System.out.println("goodbye");
+
+
+          clientSock.close();
+        }
+          //sends content files
+          /*
+          try( BufferedInputStream fileStream = new BufferedInputStream(new FileInputStream(getInputStream())) ) {
+            int value = fileStream.read();
+            while(value != -1) {
+              getOutputStream.write(value);
+              value = fileStream.read();
+            }
+            getOutputStream.flush();
+          }
+          */
+
+          
+          
+          
+
+          
+
+        
+
+      } catch( IOException e ) {
+          System.err.println("Exception when listening on port " + portNumber);
+          System.err.println(e.getMessage());
+          e.printStackTrace();
+        }
+    }
+  }
